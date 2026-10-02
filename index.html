@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Juego de fichas por filas para un tablero configurable.">
+  <title>Tablero | Juego de fichas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <a class="skip-link" href="#main-content">Saltar al contenido principal</a>
+  
+  <header class="site-header">
+    <div class="brand-lockup">
+      <span class="brand-mark" aria-hidden="true">T</span>
+      <div>
+        <p class="eyebrow">Laboratorio de IPO</p>
+        <h1>Tablero</h1>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="button button-quiet" id="settings-button" type="button" aria-haspopup="dialog">Ajustar partida</button>
+      <button class="button button-quiet" id="help-button" type="button" aria-haspopup="dialog">Como jugar</button>
+    </div>
+  </header>
+
+  <main id="main-content" class="app-shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Ordena el caos</p>
+        <h2 id="page-title">Una fila, un tipo de ficha.</h2>
+        <p class="intro-copy">Intercambia dos fichas cada vez hasta que cada fila comparta forma y color.</p>
+      </div>
+      <div class="game-summary" aria-label="Resumen de la partida">
+        <span class="summary-label">Movimientos</span>
+        <strong id="move-count">0</strong>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <section class="game-panel" aria-labelledby="board-title">
+        <div class="game-heading">
+          <div>
+            <p class="eyebrow">Partida actual</p>
+            <h2 id="board-title">Encuentra el orden</h2>
+          </div>
+          <div class="legend" aria-label="Tipos de ficha">
+            <span><i class="legend-dot token--coral"></i>A</span>
+            <span><i class="legend-dot token--mint"></i>B</span>
+            <span><i class="legend-dot token--gold"></i>C</span>
+          </div>
+        </div>
+        <div class="board-wrap">
+          <div id="board" class="board" role="grid" aria-label="Tablero de juego"></div>
+        </div>
+        <div class="game-footer">
+          <p id="game-status" class="game-status" role="status" aria-live="polite">Selecciona una ficha para empezar.</p>
+          <button class="button button-secondary" id="reset-button" type="button">Reiniciar</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title">
+    <div class="dialog-header">
+      <div class="panel-heading">
+        <p class="eyebrow">Configuracion</p>
+        <h2 id="settings-title">Ajusta la partida</h2>
+      </div>
+      <button class="close-button" id="close-settings" type="button" aria-label="Cerrar ajustes">Cerrar</button>
+    </div>
+
+    <form id="settings-form">
+      <fieldset>
+        <legend>Tablero</legend>
+        <label for="board-size">Dimension <span class="field-hint">N x N</span></label>
+        <div class="stepper">
+          <button class="stepper-button" type="button" data-step="-1" aria-label="Reducir dimension">-</button>
+          <input id="board-size" name="board-size" type="number" min="3" max="9" value="5" inputmode="numeric">
+          <button class="stepper-button" type="button" data-step="1" aria-label="Aumentar dimension">+</button>
+        </div>
+        <p class="field-help">Entre 3 y 9 filas.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Tamano de fichas</legend>
+        <div class="segmented-control" role="group" aria-label="Tamano de fichas">
+          <button class="segment" type="button" data-size="small">Pequena</button>
+          <button class="segment is-active" type="button" data-size="medium">Mediana</button>
+          <button class="segment" type="button" data-size="large">Grande</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Aspecto de fichas</legend>
+        <label for="shape-select">Forma</label>
+        <select id="shape-select" name="shape">
+          <option value="mixed">Mezcla de formas</option>
+          <option value="circle">Circulos</option>
+          <option value="square">Cuadrados</option>
+          <option value="triangle">Triangulos</option>
+        </select>
+        <label for="palette-select">Paleta</label>
+        <select id="palette-select" name="palette">
+          <option value="studio">Estudio</option>
+          <option value="citrus">Citrica</option>
+          <option value="berry">Frutal</option>
+        </select>
+      </fieldset>
+
+      <button class="button button-primary" type="submit">Nueva partida</button>
+    </form>
+  </dialog>
+
+  <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-header">
+      <div>
+        <p class="eyebrow">Reglas rapidas</p>
+        <h2 id="help-title">Como jugar</h2>
+      </div>
+      <button class="close-button" id="close-help" type="button" aria-label="Cerrar ayuda">Cerrar</button>
+    </div>
+    <ol class="rules-list">
+      <li><strong>Elige</strong> una ficha haciendo clic sobre ella o arrastrandola.</li>
+      <li><strong>Intercambia</strong> dos fichas para cambiar sus posiciones.</li>
+      <li><strong>Completa</strong> el tablero: cada fila debe contener un unico tipo.</li>
+    </ol>
+    <p class="dialog-note">Puedes cambiar la dimension o el aspecto cuando quieras. Eso crea una partida nueva.</p>
+  </dialog>
+
+  <dialog id="completion-dialog" class="completion-dialog" aria-labelledby="completion-title">
+    <p class="eyebrow">Partida completada</p>
+    <h2 id="completion-title">Todo en su sitio.</h2>
+    <p class="completion-copy">Has ordenado todas las filas en <strong id="completion-moves">0</strong> movimientos.</p>
+    <div class="completion-actions">
+      <button class="button button-secondary" id="close-completion" type="button">Cerrar</button>
+      <button class="button button-primary" id="new-game-completion" type="button">Nueva partida</button>
+    </div>
+  </dialog>
+  <script type="module" src="js/controller.js"></script>
+</body>
+</html>
