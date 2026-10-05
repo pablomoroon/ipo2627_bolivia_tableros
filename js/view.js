@@ -27,26 +27,32 @@ export class GameView {
       actions.newGame(this.getSettings());
       this.settingsDialog.close();
     });
+
     this.resetButton.addEventListener('click', () => actions.newGame(this.getSettings()));
     this.settingsButton.addEventListener('click', () => this.settingsDialog.showModal());
     this.closeSettings.addEventListener('click', () => this.settingsDialog.close());
+
     document.querySelectorAll('[data-step]').forEach((button) => button.addEventListener('click', () => {
       const next = Number(this.sizeInput.value) + Number(button.dataset.step);
       this.sizeInput.value = Math.min(9, Math.max(3, next));
     }));
+
     document.querySelectorAll('[data-size]').forEach((button) => button.addEventListener('click', () => {
       document.querySelectorAll('[data-size]').forEach((item) => item.classList.remove('is-active'));
       button.classList.add('is-active');
       this.activeTokenSize = button.dataset.size;
       actions.refresh();
     }));
+
     this.helpButton.addEventListener('click', () => this.helpDialog.showModal());
     this.closeHelp.addEventListener('click', () => this.helpDialog.close());
     this.closeCompletion.addEventListener('click', () => this.completionDialog.close());
+
     this.newGameCompletion.addEventListener('click', () => {
       this.completionDialog.close();
       actions.newGame(this.getSettings());
     });
+
     this.helpDialog.addEventListener('click', (event) => {
       if (event.target === this.helpDialog) this.helpDialog.close();
     });
@@ -67,29 +73,50 @@ export class GameView {
   }
 
   render(model, settings) {
+    const paletteClasses = ['palette--studio', 'palette--citrus', 'palette--berry'];
+    const tokenSizeClasses = ['token-size--small', 'token-size--medium', 'token-size--large'];
+
     this.board.style.setProperty('--board-size', model.size);
-    this.board.dataset.tokenSize = settings.tokenSize;
-    document.documentElement.dataset.palette = settings.palette;
+    this.board.classList.remove(...tokenSizeClasses);
+    this.board.classList.add(`token-size--${settings.tokenSize}`);
+
+    document.body.classList.remove(...paletteClasses);
+    document.body.classList.add(`palette--${settings.palette}`);
+
     this.moveCount.textContent = model.moves;
     this.board.innerHTML = '';
 
     model.tokens.forEach((token, index) => {
+      const shape = settings.shape === 'mixed'
+        ? ['circle', 'square', 'triangle'][token.id % 3]
+        : settings.shape;
+
       const cell = document.createElement('div');
       cell.className = 'cell';
       cell.setAttribute('role', 'gridcell');
+
       const tokenButton = document.createElement('button');
-      tokenButton.className = 'token';
+      tokenButton.className = `token token--type-${token.type} token--shape-${shape}`;
+      if (model.selectedIndex === index) tokenButton.classList.add('is-selected');
       tokenButton.type = 'button';
       tokenButton.draggable = true;
+
+      // Los atributos data-* se conservan para la interacción pedida en la práctica.
       tokenButton.dataset.type = token.type;
-      tokenButton.dataset.shape = settings.shape === 'mixed' ? ['circle', 'square', 'triangle'][token.id % 3] : settings.shape;
+      tokenButton.dataset.shape = shape;
       tokenButton.dataset.index = index;
       tokenButton.setAttribute('aria-label', `Ficha ${index + 1}, tipo ${token.type}`);
       tokenButton.setAttribute('aria-selected', model.selectedIndex === index ? 'true' : 'false');
+
       cell.append(tokenButton);
       this.board.append(cell);
     });
-    this.status.textContent = model.isComplete() ? `Tablero completado en ${model.moves} movimientos.` : model.selectedIndex === null ? 'Selecciona una ficha para empezar.' : 'Ahora selecciona otra ficha para intercambiar.';
+
+    this.status.textContent = model.isComplete()
+      ? `Tablero completado en ${model.moves} movimientos.`
+      : model.selectedIndex === null
+        ? 'Selecciona una ficha para empezar.'
+        : 'Ahora selecciona otra ficha para intercambiar.';
   }
 
   setTokenClickHandler(handler) {
@@ -104,7 +131,9 @@ export class GameView {
       const token = event.target.closest('.token');
       if (token) event.dataTransfer.setData('text/plain', token.dataset.index);
     });
+
     this.board.addEventListener('dragover', (event) => event.preventDefault());
+
     this.board.addEventListener('drop', (event) => {
       event.preventDefault();
       const target = event.target.closest('.token');
