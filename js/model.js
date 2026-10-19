@@ -1,4 +1,4 @@
-export const TOKEN_TYPES = ['coral', 'mint', 'gold'];
+export const TOKEN_COLORS = ['coral', 'mint', 'gold'];
 
 export class GameModel {
   constructor(size = 5) {
@@ -14,7 +14,7 @@ export class GameModel {
     this.moves = 0;
     this.selectedIndex = null;
     const solved = Array.from({ length: this.size * this.size }, (_, index) => ({
-      type: TOKEN_TYPES[Math.floor(index / this.size) % TOKEN_TYPES.length],
+      color: TOKEN_COLORS[Math.floor(index / this.size) % TOKEN_COLORS.length],
       id: index
     }));
     this.tokens = solved.sort(() => Math.random() - 0.5);
@@ -31,7 +31,7 @@ export class GameModel {
   isComplete() {
     return this.tokens.every((token, index) => {
       const rowStart = Math.floor(index / this.size) * this.size;
-      return token.type === this.tokens[rowStart].type;
+      return token.color === this.tokens[rowStart].color;
     });
   }
 }

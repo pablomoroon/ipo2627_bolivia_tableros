@@ -17,7 +17,7 @@ Los objetivos del proyecto son:
 
 El sistema interactúa con un único actor que es el usuario encargado de jugar al juego. 
 
-El tablero donde se practica el juego es una estructura cuadrada NxN con N>=3. En cada celda del tablero se muestra una única ficha, teniendo en cuenta que existen 3 tipos de fichas distinguibles por su forma y color. 
+El tablero donde se practica el juego es una estructura cuadrada NxN con N>=3. En cada celda del tablero se muestra una única ficha. Las fichas pueden tener distintos colores y formas, pero únicamente el color influye en la condición de victoria; la forma es solo una característica visual. 
 
 El sistema permitirá al jugador realizar las siguientes acciones:
 - Comenzar una nueva partida (tablero inicial)
@@ -32,7 +32,7 @@ La modificación de las características del tablero o las fichas supondrá la c
 La mecánica del juego es la siguiente:
 - Comienzo: el tablero de partida consiste en una distribución de fichas aleatorias teniendo en cuenta que las fichas seleccionadas permita que el juego pueda concluir.
 - Movimiento: el jugador podrá intercambiar las fichas situadas en dos celdas. 
-- Fin: el tablero se completa cuando cada una de las filas del tablero contiene fichas del mismo tipo.
+- Fin: el tablero se completa cuando cada una de las filas del tablero contiene fichas del mismo color. La forma de las fichas no influye en la condición de victoria.
 
 
 # Diseño

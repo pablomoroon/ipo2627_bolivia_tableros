@@ -429,15 +429,15 @@
   border-radius: 0;
 }
 
-.token--type-coral {
+.token--color-coral {
   --token-color: var(--token-coral);
 }
 
-.token--type-mint {
+.token--color-mint {
   --token-color: var(--token-mint);
 }
 
-.token--type-gold {
+.token--color-gold {
   --token-color: var(--token-gold);
 }
 

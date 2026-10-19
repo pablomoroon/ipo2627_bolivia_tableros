@@ -96,16 +96,16 @@ export class GameView {
       cell.setAttribute('role', 'gridcell');
 
       const tokenButton = document.createElement('button');
-      tokenButton.className = `token token--type-${token.type} token--shape-${shape}`;
+      tokenButton.className = `token token--color-${token.color} token--shape-${shape}`;
       if (model.selectedIndex === index) tokenButton.classList.add('is-selected');
       tokenButton.type = 'button';
       tokenButton.draggable = true;
 
       // Los atributos data-* se conservan para la interacción pedida en la práctica.
-      tokenButton.dataset.type = token.type;
+      tokenButton.dataset.color = token.color;
       tokenButton.dataset.shape = shape;
       tokenButton.dataset.index = index;
-      tokenButton.setAttribute('aria-label', `Ficha ${index + 1}, tipo ${token.type}`);
+      tokenButton.setAttribute('aria-label', `Ficha ${index + 1}, color ${token.color}, forma ${shape}`);
       tokenButton.setAttribute('aria-selected', model.selectedIndex === index ? 'true' : 'false');
 
       cell.append(tokenButton);
